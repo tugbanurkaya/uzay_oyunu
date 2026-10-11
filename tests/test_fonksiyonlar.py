@@ -1,4 +1,4 @@
-from oyun import envanter_metni, hedef_menusu
+from oyun import envanter_metni, hedef_menusu, galaksi_kur
 from kayit import gorev_kaydi 
 
 # Görev 1 - Sabit Fonksiyon Testleri
@@ -53,3 +53,29 @@ def test_varsayilan_oncelik_normal() -> None:
     """Öncelik belirtilmediğinde varsayılan olarak kontrol eder."""
 
     assert gorev_kaydi("Yakıt al") == "[NORMAL] Yakıt al"
+
+
+# Görev 3 - Galaksiyi Kurma Testleri
+
+def test_galaksi_kur() -> None:
+    """Galaksinin başlangıç gezegen ve bağlantı bilgilerini kontrol eder."""
+
+    gezegenler = ["dünya", "mars"]
+    baglantilar = {"dünya": ["mars"], "mars": ["dünya"]}
+
+    galaksi=galaksi_kur(gezegenler,baglantilar,"dünya",yakit=100)
+    assert galaksi["konum"] == "dünya"
+    assert galaksi["yakit"] == 100
+    assert galaksi["baglantilar"] == baglantilar
+
+def test_varsayilan_yakit() -> None:
+    """Yakıt verilmezse varsayılan değeri (yakit = 50) kontrol eder."""
+
+    galaksi = galaksi_kur(["mars"], {"mars": []}, "mars" )
+    assert galaksi["yakit"] == 50
+
+def test_hatali_baslangic() -> None:
+    """Listede olmayan başlangıç gezegeninde 'ValueError' hatası fırlatır."""
+
+    with pytest.raises(ValueError):
+        galaksi_kur(["mars"], {"mars": []}, "dünya")
