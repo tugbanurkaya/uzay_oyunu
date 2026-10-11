@@ -1,4 +1,5 @@
 import json
+from araclar import hamle_sayaci, en_bagli_gezegenler
 
 """Uzay Oyununa Hoş Geldin!
 
@@ -57,7 +58,7 @@ def galaksi_kur(gezegenler: list[str],baglantilar: dict[str, list[str]],baslangi
     return galaksi
 
 
-def travel(galaksi: dict, envanter: dict) -> None:
+def travel(galaksi: dict, envanter: dict, sayac) -> None:
     """Oyuncunun gezegenler arasında yolculuk yapmasını sağlar."""
 
     planet = galaksi["konum"]
@@ -83,10 +84,11 @@ def travel(galaksi: dict, envanter: dict) -> None:
                 print("Once tum gerekli esyalari toplamalisin!")
                 return None
 
+            hamle = sayac()
+
             galaksi["konum"] = hedef
 
             print(f"{hedef} gezegenine gidildi.")
-
             return hedef
             
         else:
@@ -108,11 +110,17 @@ if __name__ == "__main__":
         "copilot": False
     }
 
+    sayac = hamle_sayaci()
+    toplam_hamle = 0
+
     tamamlanan_adimlar = set()
     oyun_kazanildi = False
 
     while g["konum"] != "kara_delik":
-        gidilen = travel(g, envanter)
+        gidilen = travel(g, envanter, sayac)
+        
+        if gidilen is not None:
+            toplam_hamle += 1
 
         if gidilen == "centauri" and "centauri" not in tamamlanan_adimlar:
             if envanter["credits"] == False:
@@ -138,3 +146,5 @@ if __name__ == "__main__":
     
     if oyun_kazanildi:
         print("Tebrikler! Kara deliğe atladın, oyun bitti!")
+        print(f"Oyunu {toplam_hamle} hamlede bitirdin!")
+        en_bagli_gezegenler(g)
