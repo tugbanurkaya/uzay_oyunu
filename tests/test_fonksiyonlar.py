@@ -1,3 +1,4 @@
+import pytest
 from oyun import envanter_metni, hedef_menusu, galaksi_kur
 from kayit import gorev_kaydi 
 
