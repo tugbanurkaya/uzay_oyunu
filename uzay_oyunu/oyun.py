@@ -1,5 +1,6 @@
 import json
-from araclar import hamle_sayaci, en_bagli_gezegenler
+from pathlib import Path
+from .araclar import hamle_sayaci, en_bagli_gezegenler
 
 """Uzay Oyununa Hoş Geldin!
 
@@ -99,7 +100,7 @@ def travel(galaksi: dict, envanter: dict, sayac) -> None:
         return None
 
 if __name__ == "__main__":
-    with open("galaksi.json", "r", encoding="utf-8") as dosya:
+    with open(Path(__file__).resolve().parent / "galaksi.json", "r", encoding="utf-8") as dosya:
          veri = json.load(dosya)
 
     g = galaksi_kur(**veri)

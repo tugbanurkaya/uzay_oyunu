@@ -1,6 +1,6 @@
 import pytest
-from oyun import envanter_metni, hedef_menusu, galaksi_kur
-from kayit import gorev_kaydi 
+from uzay_oyunu.oyun import envanter_metni, hedef_menusu, galaksi_kur
+from uzay_oyunu.kayit import gorev_kaydi 
 
 # Görev 1 - Sabit Fonksiyon Testleri
 
