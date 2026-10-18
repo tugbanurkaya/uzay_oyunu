@@ -2,6 +2,7 @@
 
 ---
 
+
 **Kurum:** İstanbul Nişantaşı Üniversitesi  
 **Ders:** Python ile Programlama  
 **Öğretim Üyesi:** Dr. Öğr. Üyesi Murat Emeç
@@ -9,6 +10,7 @@
 **Bölüm:** Veri Bilimi ve Analitiği
 **Öğrenci Adı Soyadı:** Tuğba Nur Kaya
 **Öğrenci Numarası:** 20253005004
+
 
 ---
 
