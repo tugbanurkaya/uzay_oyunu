@@ -1,5 +1,6 @@
-from typing import Iterator, Iterable 
+from typing import Iterator, Iterable, Callable
 from itertools import islice, takewhile
+from functools import lru_cache
 
 # Hafta 4 - Görev 1: Fibonacci Üreteci
 
@@ -70,4 +71,14 @@ def rota_sayisi_onbelleksiz(baglantilar: dict[str,list[str]], gezegen: str, adim
         return 1
     return sum(rota_sayisi_onbelleksiz(baglantilar, h, adim-1) for h in baglantilar[gezegen])
 
+def rota_sayaci(baglantilar: dict[str, list[str]]) -> Callable[[str, int], int]:
+    """Gezegen bağlantılarını kullanarak olduğu adımdaki rota sayısını hesaplayan önbellekli fonksiyonu @lru_cache kullanarak üretir."""
+    @lru_cache(maxsize=None)
 
+    def rota_sayisi(gezegen:str, adim: int) -> int: 
+        """Olduğu gezegenden tam adım yolculuk yapabildiği gezegenlere olan rota sayısını döndürür."""
+        if adim == 0:
+            return 1
+        return sum(rota_sayisi(h, adim-1) for h in baglantilar[gezegen])
+
+    return rota_sayisi

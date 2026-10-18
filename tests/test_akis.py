@@ -2,7 +2,7 @@ from uzay_oyunu.akis import fibonacci, yakit_gostergesi, satirlari_oku, ayristir
 from itertools import islice, takewhile
 import pytest , time , json
 from pathlib import Path
-from uzay_oyunu.akis import rota_sayisi_onbelleksiz
+from uzay_oyunu.akis import rota_sayisi_onbelleksiz, rota_sayaci
 
 # Hafta 4 - GÖREV 1: Fibonacci Üreteci Testleri
 
@@ -78,13 +78,40 @@ with open(veri_yolu,"r",encoding="utf-8")as dosya:
     galaksi=json.load(dosya)
 
 def test_onbelleksiz_rota_sayaci() -> None:
-    """Tam adım sayısına sahip rotaları kontrol eder.
-    time.perf_counter kullanarak önbelleksiz sürümün 20 adım için kaç saniye sürdüğünü hesaplar."""
-    baslangic = time.perf_counter()
+    """Önbelleksiz sürümün 20 adım için kaç saniye sürdüğünü hesaplar."""
     rota_sayisi = rota_sayisi_onbelleksiz(galaksi["baglantilar"],"dünya", 20)
-    onbelleksiz_sure = time.perf_counter() - baslangic
 
     assert rota_sayisi == 4315343
+    print("Önbelleksiz rota sayısı:", rota_sayisi)
+
+def test_onbellekli_rota_sayaci() -> None:
+    """önbellekli sürümün 20 adım için kaç saniye sürdüğünü hesaplar."""
+    sayac=rota_sayaci(galaksi["baglantilar"])
+    
+    assert sayac("dünya", 3) == 9
+    assert sayac("dünya", 10) == 2185
+    assert sayac("dünya", 40) == 16832258606399
+    assert sayac("dünya", 20) == 4315343
+    print("Önbellekli rota sayısı:",sayac("dünya",20))
+
+def test_sure_karsilastirmasi() -> None:
+    """Önbellekli ve önbelleksiz rota sayacını 20 adım için kaç saniye sürdüğünü hesaplayarak karşılaştırır."""
+
+    baslangic = time.perf_counter()
+    onbelleksiz = rota_sayisi_onbelleksiz(galaksi["baglantilar"], "dünya", 20)
+    onbelleksiz_sure = time.perf_counter() - baslangic
+
+    sayac = rota_sayaci(galaksi["baglantilar"])
+
+    baslangic = time.perf_counter()
+    onbellekli = sayac("dünya", 20)
+    onbellekli_sure = time.perf_counter() - baslangic
+
+    assert onbelleksiz == onbellekli == 4315343
+
+    karsilastirma = onbelleksiz_sure / onbellekli_sure
 
     print(f"Önbelleksiz süre: {onbelleksiz_sure:.7f} saniye")
-    print("Rota sayısı:", rota_sayisi)
+    print(f"Önbellekli süre: {onbellekli_sure:.7f} saniye")
+    print(f"Önbellekli hesaplama {karsilastirma:.0f} kat daha hızlıdır.")
+    print("Cache:", sayac.cache_info())
