@@ -1,6 +1,8 @@
 from uzay_oyunu.akis import fibonacci, yakit_gostergesi, satirlari_oku, ayristir, uzun_yolculuklar
 from itertools import islice, takewhile
-import pytest
+import pytest , time , json
+from pathlib import Path
+from uzay_oyunu.akis import rota_sayisi_onbelleksiz
 
 # Hafta 4 - GÖREV 1: Fibonacci Üreteci Testleri
 
@@ -68,3 +70,21 @@ def test_uzun_yolculuklar() -> None:
     """Pdf'de verilen örnekteki ['sirius', 'centauri', 'orion', 'kara_delik'] çıktısını doğrular."""
     kayitlar = ayristir(satirlari_oku("veri/seyir.txt"))
     assert  [h for _, h, _ in uzun_yolculuklar(kayitlar, 10)] == ["sirius", "centauri", "orion", "kara_delik"] 
+
+# Hafta 4 - Görev 4: Rota Sayacı Testleri
+
+veri_yolu = Path(__file__).resolve().parents[1]/"uzay_oyunu"/"galaksi.json"
+with open(veri_yolu,"r",encoding="utf-8")as dosya:
+    galaksi=json.load(dosya)
+
+def test_onbelleksiz_rota_sayaci() -> None:
+    """Tam adım sayısına sahip rotaları kontrol eder.
+    time.perf_counter kullanarak önbelleksiz sürümün 20 adım için kaç saniye sürdüğünü hesaplar."""
+    baslangic = time.perf_counter()
+    rota_sayisi = rota_sayisi_onbelleksiz(galaksi["baglantilar"],"dünya", 20)
+    onbelleksiz_sure = time.perf_counter() - baslangic
+
+    assert rota_sayisi == 4315343
+
+    print(f"Önbelleksiz süre: {onbelleksiz_sure:.7f} saniye")
+    print("Rota sayısı:", rota_sayisi)

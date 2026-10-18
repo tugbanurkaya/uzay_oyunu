@@ -61,3 +61,13 @@ def uzun_yolculuklar(kayitlar: Iterable[tuple[str, str, int]], esik: int) -> Ite
     for kayit in kayitlar:
         if kayit[2] > esik:
             yield kayit
+
+# Hafta 4 - Görev 4: Önbellekli Rota Sayacı
+
+def rota_sayisi_onbelleksiz(baglantilar: dict[str,list[str]], gezegen: str, adim: int) -> int:
+    """Önbellek kullanmadan her çağrıda bağlantılı gezegenlerdeki rota sayısını hesaplar."""
+    if adim == 0:
+        return 1
+    return sum(rota_sayisi_onbelleksiz(baglantilar, h, adim-1) for h in baglantilar[gezegen])
+
+
