@@ -1,4 +1,4 @@
-from uzay_oyunu.akis import fibonacci, yakit_gostergesi
+from uzay_oyunu.akis import fibonacci, yakit_gostergesi, satirlari_oku, ayristir, uzun_yolculuklar
 from itertools import islice, takewhile
 import pytest
 
@@ -50,3 +50,21 @@ def test_yakit_bitmesi():
     assert next(g) == 0
     with pytest.raises(StopIteration):
         next(g)
+
+# Hafta 4 - Görev 3: Seyir Defteri Boru Hattı Testleri
+
+def test_satirlari_oku() -> None:
+    """Seyir defterinde bulunan boş satırların ve yorum satırlarının atlandığını kontrol eder."""
+    okuma = list(satirlari_oku("veri/seyir.txt"))
+    assert len(okuma)==6
+    assert okuma[0] == "dünya -> sirius 12"
+    assert "# bakım molası" not in okuma
+
+def test_ayristir_toplam_yakit() -> None:
+    """Verilen örnekteki ayristir(satirlari_oku()) ile yakıt toplamının 88 olduğunu doğrular."""
+    assert sum(y for _, _, y in ayristir(satirlari_oku("veri/seyir.txt"))) == 88
+
+def test_uzun_yolculuklar() -> None:
+    """Pdf'de verilen örnekteki ['sirius', 'centauri', 'orion', 'kara_delik'] çıktısını doğrular."""
+    kayitlar = ayristir(satirlari_oku("veri/seyir.txt"))
+    assert  [h for _, h, _ in uzun_yolculuklar(kayitlar, 10)] == ["sirius", "centauri", "orion", "kara_delik"] 
