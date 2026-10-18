@@ -20,6 +20,22 @@ Gezegenler arasındaki yolculuklar `galaksi.json` dosyasında tanımlanan bağla
 
 Oyunu bitirmek için yakıt bitmeden önce kredi kazanmalı, yardımcı pilotu bulmalı ve hiperdrive almalı bu adımları tamamladıktan sonra kara deliğe ulaşmalı. Yakıt biterse, uzayda sürüklenir ve oyun kaybedilir.
 
+---
+
+\***\*Programın Çalışması İçin Gereken Komutlar\*\***
+
+---
+
+**Oyunu başlatmak için:**
+
+```bash
+
+python -m uzay_oyunu.oyun
+
+uv run python -m uzay_oyunu.oyun
+
+```
+
 **Oyunu başlatmak için:**
 
 ```bash
@@ -36,17 +52,57 @@ uv run python -m uzay_oyunu.oyun
 
 python -m pytest
 
-uv run python -m pytest
+uv run pytest
 
 ```
 
-**Yalnızca fonksiyon testlerini çalıştırmak için:**
+**Fonksiyon testlerini çalıştırmak için:**
 
 ```bash
 
 python -m pytest tests/test_fonksiyonlar.py -v
 
-uv run python -m pytest tests/test_fonksiyonlar.py -v
+uv run pytest tests/test_fonksiyonlar.py -v
+
+```
+
+**Tuzak testlerini çalıştırmak için:**
+
+```bash
+
+python -m pytest tests/test_tuzaklar.py -v
+
+uv run pytest tests/test_tuzaklar.py -v
+
+```
+
+**Akış testlerini çalıştırmak için:**
+
+```bash
+
+python -m pytest tests/test_akis.py -v
+
+uv run pytest tests/test_akis.py -v
+
+```
+
+**İstatistik testlerini çalıştırmak için:**
+
+```bash
+
+python -m pytest tests/test_istatistik.py -v
+
+uv run pytest tests/test_istatistik.py -v
+
+```
+
+**Rota sürelerini görüntülemek için:**
+
+```bash
+
+python -m pytest tests/test_akis.py -v -s
+
+uv run pytest tests/test_akis.py -v -s
 
 ```
 
