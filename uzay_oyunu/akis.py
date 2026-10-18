@@ -1,4 +1,4 @@
-from typing import Iterator
+from typing import Iterator, Iterable 
 from itertools import islice, takewhile
 
 # Hafta 4 - Görev 1: Fibonacci Üreteci
@@ -36,3 +36,28 @@ def yakit_gostergesi(yakit: int, tuketim: int) -> Iterator[int]:
         yakit = max(yakit - tuketim, 0)
         yield yakit
     return 
+
+# Hafta 4 - Görev 3: Seyir Defteri Boru Hattı
+
+def satirlari_oku(yol: str) -> Iterator[str]:
+    """1. Üreteç dosyadaki boş ve yorum satırlarını atlayarak diğer satırları yield ile üretir.
+    Hiçbir aşamada tüm dosyayı bir listeye okumaz (tembel değerlendirme)."""
+    with open(yol, "r", encoding="utf-8") as dosya:
+        for satir in dosya:
+            düzgün_satir = satir.strip()
+            if düzgün_satir and not düzgün_satir.startswith("#"):
+                yield düzgün_satir
+
+def ayristir(satirlar: Iterable[str]) -> Iterator[tuple[str, str, int]]:
+    """2. üreteç her satırdan (kaynak, hedef, yakit) demeti üretir.
+    Örneğin 'dünya -> sirius 12' satırını ("dünya","sirius",12) demetine dönüştürür."""
+    for satir in satirlar:
+        rota, yakit=satir.rsplit(" ", 1)
+        kaynak, hedef = rota.split(" -> ")
+        yield kaynak, hedef, int(yakit)
+
+def uzun_yolculuklar(kayitlar: Iterable[tuple[str, str, int]], esik: int) -> Iterator[tuple[str, str, int]]:
+    """3. üreteç yakıtı eşikten büyük olan kayıtları süzen üreteç."""
+    for kayit in kayitlar:
+        if kayit[2] > esik:
+            yield kayit
