@@ -2,17 +2,16 @@
 
 ---
 
-
-**Kurum:** İstanbul Nişantaşı Üniversitesi  
-**Ders:** Python ile Programlama  
-**Öğretim Üyesi:** Dr. Öğr. Üyesi Murat Emeç
-**Dönem:** 2026 - 2027 Güz
-**Bölüm:** Veri Bilimi ve Analitiği
-**Öğrenci Adı Soyadı:** Tuğba Nur Kaya
+**Kurum:** İstanbul Nişantaşı Üniversitesi <br>
+**Ders:** Python ile Programlama <br>
+**Öğretim Üyesi:** Dr. Öğr. Üyesi Murat Emeç <br>
+**Dönem:** 2026 - 2027 Güz <br>
+**Bölüm:** Veri Bilimi ve Analitiği <br>
+**Öğrenci Adı Soyadı:** Tuğba Nur Kaya <br>
 **Öğrenci Numarası:** 20253005004
 
-
 ---
+
 
 # Uzay Oyunu
 
