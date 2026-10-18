@@ -25,3 +25,14 @@ if __name__ == "__main__":
     # itertools.takewhile() ile 100'den küçük değerleri bulma   
     yuzden_kucuk_degerler = (list(takewhile(lambda x: x < 100, fibonacci())))
     print("\ntakewhile() ile fibonaccinin 100'den küçük değerleri: ", yuzden_kucuk_degerler)
+
+# Hafta 4 - Görev 2: Yakıt Göstergesi
+
+def yakit_gostergesi(yakit: int, tuketim: int) -> Iterator[int]: 
+    """Her next() çağrısında yakıtı tüketim kadar azaltıp kalan yakıtı yield üretir ve yakıt 0’a inince durur."""
+    if tuketim <= 0:
+        raise ValueError("Tüketim pozitif olmalı")
+    while yakit > 0 :
+        yakit = max(yakit - tuketim, 0)
+        yield yakit
+    return 
