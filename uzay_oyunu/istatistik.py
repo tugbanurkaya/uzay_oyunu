@@ -1,7 +1,8 @@
 # Hafta 4 - Görev 5: map, filter, reduce ve partial
-import json
+import json, time
 from pathlib import Path
 from functools import reduce, partial
+from typing import Generator
 
 veri_yolu=Path(__file__).resolve().parent/"galaksi.json"
 with open (veri_yolu,"r",encoding="utf-8") as dosya:
@@ -49,3 +50,36 @@ if __name__ == "__main__":
 
 # Python'da liste üreteci, sum fonksiyonu daha okunaklıdır. Karmaşık ifadelere gerek duymadan tek bir satırda kolaylıkla yazılıp istenilen değeri döndürür.
 
+# Hafta 4 - Bonus : Tik Tak Zamanlayıcısı
+
+def zamanlayici(aralik: float) -> Generator[bool, None, None]:
+    """Kaynak kitabın ticker örneği: üreteç, iki çağrı arasında sonr değişkenini hatırlar.
+    """
+    son=time.time()
+    while True:
+        simdi=time.time()
+        if simdi-son>=aralik:
+            son = simdi
+            yield True
+        else:
+            yield False
+
+if __name__ == "__main__":
+    tik = zamanlayici(2.0)
+    tak = zamanlayici(5.0)
+
+    baslangic = time.time()
+
+    while time.time() - baslangic < 10:
+        if next(tik):
+            print("tik")
+
+        if next(tak):
+            print("tak")
+
+        if time.time() - baslangic >= 10:
+            break
+
+# Programda zamanlayici() üreteci kullanılarak 10 saniye boyunca geçen süreyi kontrol ettiği için meşgul bekleme olarak adlandırılır.
+# Meşgul bekleme while True döngüsü içinde koşulun gerçekleşip gerçekleşmediğini kontrol eder.
+# time.sleep() ise belirtilen süre içerisinde yapılacak işlemleri durdurur ve bu sayede işlemcinin gereksiz çalışmasına engel olur.
