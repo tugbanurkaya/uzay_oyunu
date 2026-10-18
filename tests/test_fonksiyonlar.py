@@ -16,7 +16,7 @@ def test_envanter_icerigi_bos() -> None:
 def test_hedef_menusu() -> None:
     """Gezegenlerin numaralandırılmış gösterimini kontrol eder."""
     assert hedef_menusu(["centauri", "sirius"]) == (
-        "Nereye gitmek istersin?\n"
+        "\nNereye gitmek istersin?\n"
         "[1] centauri\n"
         "[2] sirius"
     )
