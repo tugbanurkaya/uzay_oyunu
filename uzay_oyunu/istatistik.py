@@ -1,7 +1,7 @@
 # Hafta 4 - Görev 5: map, filter, reduce ve partial
 import json
 from pathlib import Path
-from functools import reduce
+from functools import reduce, partial
 
 veri_yolu=Path(__file__).resolve().parent/"galaksi.json"
 with open (veri_yolu,"r",encoding="utf-8") as dosya:
@@ -32,6 +32,12 @@ def toplam_baglanti_sayisi_sum() -> int:
     """Gezegenlerin toplam bağlantı sayısını sum ile hesaplar."""
     return sum(len(galaksi["baglantilar"][g]) for g in galaksi["gezegenler"])
 
+def yolculuk(gezegen: str, hiz: int) -> str:
+    """functools.partial ile yolculuk fonksiyonunda hızı sabit olan hizli_yolculuk adında bir fonksiyon yazdırır."""
+    return f"{gezegen} gezegenine {hiz} hızla gidiliyor."
+
+hizli_yolculuk =partial(yolculuk, hiz=3)
+
 if __name__ == "__main__":
     print(gezegen_adlari_buyuk_harf_map())
     print(gezegen_adlari_buyuk_harf_liste())
@@ -39,3 +45,7 @@ if __name__ == "__main__":
     print(baglanti_sayisi_liste())
     print(toplam_baglanti_sayisi_reduce())
     print(toplam_baglanti_sayisi_sum())
+    print(hizli_yolculuk("centauri"))
+
+# Python'da liste üreteci, sum fonksiyonu daha okunaklıdır. Karmaşık ifadelere gerek duymadan tek bir satırda kolaylıkla yazılıp istenilen değeri döndürür.
+
