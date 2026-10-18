@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from .araclar import hamle_sayaci, en_bagli_gezegenler
+from .akis import yakit_gostergesi
 
 """Uzay Oyununa Hoş Geldin!
 
@@ -8,6 +9,7 @@ Amaç: Gezegenden gezegene gidip bulmacaları çözerek kara deliğe atlamak.
 Oyunu kazanmak için kredi kazanmalı, pilot bulmalı, hiperdrive almalı
 ve kara deliğe atlamalısın.
 Dikkat: Adımları sırasıyla uygulamalısın.
+Yakıtın biterse uzayda sürüklenir ve oyunu kaybedersin!
 """
 
 def envanter_metni(credits: bool, engines: bool, copilot: bool) -> str:
@@ -34,7 +36,7 @@ def hedef_menusu(hedefler: list[str]) -> str:
     """Numaralı hedef menüsünü döndürür.
     Hedefler liste şeklindedir ve metin döndürülür."""
 
-    menu = ["Nereye gitmek istersin?"]
+    menu = ["\nNereye gitmek istersin?"]
 
     for sira, hedef in enumerate(hedefler, start=1):
         menu.append(f"[{sira}] {hedef}")
@@ -59,8 +61,11 @@ def galaksi_kur(gezegenler: list[str],baglantilar: dict[str, list[str]],baslangi
     return galaksi
 
 
-def travel(galaksi: dict, envanter: dict, sayac) -> None:
-    """Oyuncunun gezegenler arasında yolculuk yapmasını sağlar."""
+def travel(galaksi: dict, envanter: dict, sayac, gosterge: int) -> str | None:
+    """Oyuncunun gezegenler arasında yolculuk yapmasını sağlar.
+     Geçerli hedef seçilmidiğinde yakıtı azalır ve aynı zamanda hamleleri sayar. 
+    Yakıt biterse oyunu sonlandırır. 'Yakıtın bitti, uzayda sürükleniyorsun...' döndürür.
+    Yakıt bitmeden oyuna devam ederken gidilen gezegenin adını döndürür."""
 
     planet = galaksi["konum"]
     hedefler = galaksi["baglantilar"][planet]
@@ -84,12 +89,21 @@ def travel(galaksi: dict, envanter: dict, sayac) -> None:
             if hedef == "kara_delik" and not all (envanter.values()):
                 print("Once tum gerekli esyalari toplamalisin!")
                 return None
+            try:
+                galaksi["yakit"] = next(gosterge)
+
+            except StopIteration:
+                print("Yakıtın bitti, uzayda sürükleniyorsun...")
+                galaksi["Oyun bitti"] = True
+                return None
 
             hamle = sayac()
 
             galaksi["konum"] = hedef
 
             print(f"{hedef} gezegenine gidildi.")
+            print(f"Kalan yakıt: {galaksi["yakit"]}")
+
             return hedef
             
         else:
@@ -104,6 +118,8 @@ if __name__ == "__main__":
          veri = json.load(dosya)
 
     g = galaksi_kur(**veri)
+    gosterge = yakit_gostergesi(g["yakit"], 5)
+    g["Oyun bitti"] = False
     
     envanter = {
         "credits": False,
@@ -117,8 +133,8 @@ if __name__ == "__main__":
     tamamlanan_adimlar = set()
     oyun_kazanildi = False
 
-    while g["konum"] != "kara_delik":
-        gidilen = travel(g, envanter, sayac)
+    while g["konum"] != "kara_delik" and not g["Oyun bitti"]:
+        gidilen = travel(g, envanter, sayac, gosterge)
         
         if gidilen is not None:
             toplam_hamle += 1
@@ -137,6 +153,7 @@ if __name__ == "__main__":
                 tamamlanan_adimlar.add("sirius")
             else:
                 print("Yanlış cevap, tekrar denemelisin.")
+
         elif gidilen == "orion" and "orion" not in tamamlanan_adimlar:
             envanter["copilot"] = True
             tamamlanan_adimlar.add("orion")
